@@ -9,7 +9,7 @@ app.get('/', function(req,res){
 })
 
 app.post('/', function (req, res){
-  console.log.(req.body.Collection);
+  console.log(req.body.Collection);
   res.render('index');
 })
 
