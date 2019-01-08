@@ -7,7 +7,7 @@ function createConnection(cb){
   MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
     if (err) throw err;
     var dbo = db.db("collectd");
-    cb(dbo);
+    cb(null, dbo);
 })
 }
 
@@ -15,7 +15,7 @@ function read(dbo, cb){
   dbo.collection("memory").findOne({}, function(err, result) {
     if (err) throw err;
     console.log("Loading file");
-    console.log(result.name);
+    console.log(result);
     db.close;
 })
 }
