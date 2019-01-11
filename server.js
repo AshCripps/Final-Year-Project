@@ -36,11 +36,16 @@ function createConnection(cb){
 }
 
 function read(dbo, cb){
-  dbo.collection("memory").findOne({}, function(err, result) {
+  var cursor = dbo.collection("memory").find({}, { projection { host: 1, type_instance: 1, values:1}}).toArray( function(err, results){
     if (err) throw err;
-    console.log("Loading file");
+    console.log("loading");
     console.log(result);
-    db.close;
+  })
+  //, function(err, result) {
+  //  if (err) throw err;
+  //  console.log("Loading file");
+  //  console.log(result);
+    //db.close;
 })
 }
 
