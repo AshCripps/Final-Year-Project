@@ -10,6 +10,14 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
 app.get('/', function(req,res){
+  loadOptions(function(err){
+    if (err){
+      console.log("it done broked", err);
+      process.exit(1);
+    }
+    console.log(results);
+  })
+
   res.render('index');
 })
 
@@ -37,11 +45,6 @@ function createConnection(cb){
 }
 
 function read(dbo, cb){
-  var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray( function(err, results){
-    if (err) throw err;
-    console.log("loading Collection List");
-    console.log(results);
-  })
   var cursor = dbo.collection("memory").find({}, {host: 1, type_instance: 1, values:1}).toArray( function(err, results){
     if (err) throw err;
     console.log("loading");
@@ -53,6 +56,23 @@ function read(dbo, cb){
   //  console.log("Loading file");
   //  console.log(result);
     dbo.close();
+}
+
+function readOptions(dbo, cb){
+  var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray( function(err, results){
+    if (err) throw err;
+    console.log("loading Collection List");
+    //console.log(results);
+  })
+    dbo.close();
+}
+
+function loadOptions(cb){
+  createConnection(function(err, dbo){
+    if (err) return cb(err);
+    readOptions(dbo);
+    cb();
+  })
 }
 
 function test(cb){
