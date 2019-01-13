@@ -20,10 +20,10 @@
           </select>
           <input type="submit" value="Submit" />
         </form>
-        <% if(selection !== null){ %>
-          <p><%= selection %></p>
-        <% } %>
         <form action="/" method="post">
+          <% if(selection !== null){ %>
+            <p><%= selection %></p>
+          <% } %>
           <input name="Collection" type="text" class="ghost-input" placeholder="Enter a collection" required>
           <input type="submit" class="ghost-button" value="Get Top Document">
         </form>

@@ -22,17 +22,17 @@ app.get('/', function(req,res){
         arr.push(element.name);
       });
       console.log(arr);
-      res.render('index', {rows:arr});
+      res.render('index', {rows:arr, selection:null});
     })
   })
 
   //res.render('index');
 })
 
-app.get('/', function(req,res){
+app.post('/', function(req,res){
   var selected = req.body.selectpicker
   console.log("Option picked is ", selected);
-  res.render('index', {selection:selected});
+  res.render('index', {selection:selected, rows:arr});
 })
 
 app.post('/', function (req, res){
