@@ -36,16 +36,22 @@ function createConnection(cb){
 }
 
 function read(dbo, cb){
-  var cursor = dbo.collection("memory").find({}, { projection { host: 1, type_instance: 1, values:1}}).toArray( function(err, results){
+  var cursor2 = dbo.listCollections({}, {nameOnly:1}).toArray( function(err, results){
+    if (err) throw err;
+    console.log("loading Collection List");
+    console.log(results);
+  })
+  var cursor = dbo.collection("memory").find({}, {host: 1, type_instance: 1, values:1}).toArray( function(err, results){
     if (err) throw err;
     console.log("loading");
-    console.log(result);
+    console.log(results);
   })
+
   //, function(err, result) {
   //  if (err) throw err;
   //  console.log("Loading file");
   //  console.log(result);
-    //db.close;
+    dbo.close();
 })
 }
 
