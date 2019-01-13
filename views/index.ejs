@@ -10,7 +10,7 @@
     <div class="container">
       <fieldset>
         <form id="tableForm" action="/" method="get">
-          <select class="selectpicker" data-style="btn-info" name="selectpicker">
+          <select class="selectpicker" data-style="btn-info" class="ghost-input" name="selectpicker">
             <optgroup label="Select Table">
             <option value="">Select a Collection to View</option>
             <% rows.forEach(function(row){ %>
@@ -18,14 +18,14 @@
             <% }) %>
           </optgroup>
           </select>
-          <input type="submit" value="Submit" />
+          <input type="submit" class="ghost-button" value="Submit" />
         </form>
         <form action="/" method="post">
           <% if(selection !== null){ %>
             <p><%= selection %></p>
           <% } %>
-          <input name="Collection" type="text" class="ghost-input" placeholder="Enter a collection" required>
-          <input type="submit" class="ghost-button" value="Get Top Document">
+          <!--<input name="Collection" type="text" class="ghost-input" placeholder="Enter a collection" required>
+          <input type="submit" class="ghost-button" value="Get Top Document">-->
         </form>
       </fieldset>
     </div>

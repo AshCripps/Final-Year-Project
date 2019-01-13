@@ -32,7 +32,7 @@ app.get('/', function(req,res){
 app.post('/', function(req,res){
   var selected = req.body.selectpicker
   console.log("Option picked is ", selected);
-  res.render('index', {selection:selected, rows:arr});
+  res.render('index', {selection:selected});
 })
 
 app.post('/', function (req, res){
