@@ -7,6 +7,7 @@ var url = "mongodb://localhost:27017/";
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}));
+app.use(express.static('public'));
 
 app.get('/', function(req,res){
   res.render('index');
@@ -36,7 +37,7 @@ function createConnection(cb){
 }
 
 function read(dbo, cb){
-  var cursor2 = dbo.listCollections({}, {nameOnly:1}).toArray( function(err, results){
+  var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray( function(err, results){
     if (err) throw err;
     console.log("loading Collection List");
     console.log(results);
@@ -52,7 +53,6 @@ function read(dbo, cb){
   //  console.log("Loading file");
   //  console.log(result);
     dbo.close();
-})
 }
 
 function test(cb){
