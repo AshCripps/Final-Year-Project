@@ -10,13 +10,16 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
 app.get('/', function(req,res){
-  loadOptions(function(err, results)0{
-    if (err){
-      console.log("it done broked", err);
-      process.exit(1);
+  createConnection(function(err, dbo){
+    if (err) {
+      console.log("Broken", err);
     }
-    console.log(results);
-  })
+    var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray(function(err, results){
+      if (err) throw err;
+      console.log("Loading Collections");
+      console.log(results);
+    })
+  })  
 
   res.render('index');
 })
@@ -55,26 +58,10 @@ function read(dbo, cb){
   //  if (err) throw err;
   //  console.log("Loading file");
   //  console.log(result);
-    dbo.close();
+    dbo.close;
 }
 
-function readOptions(dbo, cb){
-  var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray( function(err, results){
-    if (err) throw err;
-    console.log("loading Collection List");
-    //console.log(results);
-    cb(null, results);
-})
-    dbo.close();
-}
 
-function loadOptions(cb){
-  createConnection(function(err, dbo){
-    if (err) return cb(err);
-    readOptions(dbo);
-    cb();
-  })
-}
 
 function test(cb){
   createConnection(function(err, dbo){
