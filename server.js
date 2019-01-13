@@ -17,12 +17,22 @@ app.get('/', function(req,res){
     var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray(function(err, results){
       if (err) throw err;
       console.log("Loading Collections");
-      console.log(results);
-      res.render('index', {rows:results});
+      var arr = [];
+      results.forEach(element => {
+        arr.push(element.name);
+      });
+      console.log(arr);
+      res.render('index', {rows:arr});
     })
   })
 
   //res.render('index');
+})
+
+app.get('/', function(req,res){
+  var selected = req.body.selectpicker
+  console.log("Option picked is ", selected);
+  res.render('index', {selection:selected});
 })
 
 app.post('/', function (req, res){
