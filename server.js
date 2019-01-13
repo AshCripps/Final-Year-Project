@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
 app.get('/', function(req,res){
-  loadOptions(function(err){
+  loadOptions(function(err, results)0{
     if (err){
       console.log("it done broked", err);
       process.exit(1);
@@ -63,7 +63,8 @@ function readOptions(dbo, cb){
     if (err) throw err;
     console.log("loading Collection List");
     //console.log(results);
-  })
+    cb(null, results);
+})
     dbo.close();
 }
 
