@@ -12,7 +12,10 @@
         <form id="tableForm" action="/" method="get">
           <select class="selectpicker" data-style="btn-info" name="selectpicker">
             <optgroup label="Select Table">
-            <option value="">Select Month Year</option>
+            <option value="">Select a Collection to View</option>
+            <% rows.forEach(function(row){ %>
+            <option value="<%= row %>"><%= row %></option>
+            <% }) %>
           </optgroup>
           </select>
           <input type="submit" value="Submit" />

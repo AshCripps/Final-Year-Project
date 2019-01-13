@@ -18,10 +18,11 @@ app.get('/', function(req,res){
       if (err) throw err;
       console.log("Loading Collections");
       console.log(results);
+      res.render('index', {rows:results});
     })
-  })  
+  })
 
-  res.render('index');
+  //res.render('index');
 })
 
 app.post('/', function (req, res){
