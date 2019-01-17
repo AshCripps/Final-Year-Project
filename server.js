@@ -28,26 +28,14 @@ app.get('/', function(req,res){
     })
   })
 
-  //res.render('index');
 })
 
 app.post('/collection', function(req,res){
   var selected = req.body.selectpicker;
-  console.log("Option picked is ", req.params);
+  console.log("Option picked is ", selected);
+  test(selected);
   res.render('index', {selection:selected, rows:arr});
 })
-
-
-//app.post('/', function (req, res){
-//  console.log(req.body.Collection);
-//  test(function(err){
-//    if (err){
-//      console.log("it done broked", err);
-//      process.exit(1);
-//    }
-//  })
-//  res.render('index');
-//})
 
 app.listen(3000, function(){
   console.log("Testing and listening on port 3000")
@@ -61,8 +49,8 @@ function createConnection(cb){
 })
 }
 
-function read(dbo, cb){
-  var cursor = dbo.collection("memory").find({}, {host: 1, type_instance: 1, values:1}).toArray( function(err, results){
+function read(dbo, coll, cb){
+  var cursor = dbo.collection(coll).find({}, {host: 1, type_instance: 1, values:1}).toArray( function(err, results){
     if (err) throw err;
     console.log("loading");
     console.log(results);
@@ -77,10 +65,10 @@ function read(dbo, cb){
 
 
 
-function test(cb){
+function test(coll, cb){
   createConnection(function(err, dbo){
     if (err) return cb(err);
-    read(dbo);
+    read(dbo, coll);
     cb();
   })
 }
