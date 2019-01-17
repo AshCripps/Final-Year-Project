@@ -31,11 +31,12 @@ app.get('/', function(req,res){
   //res.render('index');
 })
 
-app.post('/', function(req,res){
-  var selected = req.query.selectpicker;
-  console.log("Option picked is ", selected);
-  res.render('index', {selection:selected});
+app.post('/collection', function(req,res){
+  var selected = req.body.selectpicker;
+  console.log("Option picked is ", req.params);
+  res.render('index', {selection:selected, rows:arr});
 })
+
 
 //app.post('/', function (req, res){
 //  console.log(req.body.Collection);
