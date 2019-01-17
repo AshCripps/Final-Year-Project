@@ -24,7 +24,7 @@ app.get('/', function(req,res){
         arr.push(element.name);
       });
       console.log(arr);
-      res.render('index', {rows:arr, selection:null});
+      res.render('index', {rows:arr, selection:null, data:null});
     })
   })
 
@@ -38,15 +38,14 @@ app.post('/collection', function(req,res){
     if (err){
       console.log("Connection Failed", err);
     }
-    var data = dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).toArray(function(err, resullts){
+    var data = dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, resullts){
       if (err) throw err;
       console.log("loading");
+        res.render('index', {selection:selected, rows:arr, data:results});
     })
   })
 
-  console.log(data);
 
-  res.render('index', {selection:selected, rows:arr});
 })
 
 app.listen(3000, function(){
