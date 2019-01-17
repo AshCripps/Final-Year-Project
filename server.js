@@ -33,7 +33,19 @@ app.get('/', function(req,res){
 app.post('/collection', function(req,res){
   var selected = req.body.selectpicker;
   console.log("Option picked is ", selected);
-  test(selected);
+
+  createConnection(function(err, dbo){
+    if (err){
+      console.log("Connection Failed", err);
+    }
+    var data = dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).toArray(function(err, resullts){
+      if (err) throw err;
+      console.log("loading");
+    })
+  })
+
+  console.log(data);
+
   res.render('index', {selection:selected, rows:arr});
 })
 
