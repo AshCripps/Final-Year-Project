@@ -38,10 +38,14 @@ app.post('/collection', function(req,res){
     if (err){
       console.log("Connection Failed", err);
     }
-    var data = dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, resullts){
+    dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) throw err;
       console.log("loading");
-        res.render('index', {selection:selected, rows:arr, data:results});
+      var data = [];
+      results.forEach(element => {
+        arr.push([element.timestamp, element.host, element.type, element.type_instance, element.values]);
+      })
+        res.render('index', {selection:selected, rows:arr, data:data});
     })
   })
 
