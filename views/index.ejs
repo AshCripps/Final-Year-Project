@@ -25,6 +25,8 @@
             <p><%= selection %></p>
           <% } %>
 
+
+        <% if(keys !==null){ %>
           <table>
             <tr>
               <% keys.forEach(function(key){ %>
@@ -36,11 +38,12 @@
                 <tr>
                   <% line.forEach(function(value){ %>
                     <td><%= value %></td>
-                  <% }) %>  
+                  <% }) %>
                 </tr>
               <% }) %>
             <% } %>
           </table>
+        <% } %>  
 
           <% if(data !== null){ %>
             <% data.forEach(function(line){ %>

@@ -46,7 +46,7 @@ app.post('/collection', function(req,res){
       results.forEach(element => {
         data.push(Object.values(element));
       })
-        res.render('index', {selection:selected, rows:arr, data:data. keys:keys});
+        res.render('index', {selection:selected, rows:arr, data:data, keys:keys});
     })
   })
 
