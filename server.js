@@ -43,7 +43,7 @@ app.post('/collection', function(req,res){
       console.log("loading");
       var data = [];
       results.forEach(element => {
-        arr.push([element.timestamp, element.host, element.type, element.type_instance, element.values]);
+        data.push(["Timestamp: " + element.timestamp, " Host: " + element.host, " Type: " + element.type, " Type_instance: " + element.type_instance, " Values: " + element.values]);
       })
         res.render('index', {selection:selected, rows:arr, data:data});
     })
