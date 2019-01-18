@@ -24,7 +24,7 @@ fieldset {
   min-width: -webkit-min-content;
   padding: 30px;
 }
-.ghost-input, p {
+.ghost-input, p, .ghost-table {
   display: block;
   font-weight:300;
   width: 100%;

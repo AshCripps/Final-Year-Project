@@ -27,7 +27,7 @@
 
 
         <% if(keys !==null){ %>
-          <table>
+          <table class="ghost-table">
             <tr>
               <% keys.forEach(function(key){ %>
                 <th><%= key %></th>
@@ -43,13 +43,7 @@
               <% }) %>
             <% } %>
           </table>
-        <% } %>  
-
-          <% if(data !== null){ %>
-            <% data.forEach(function(line){ %>
-              <p><%= line %></p>
-            <% }) %>
-          <% } %>
+        <% } %>
         </form>
       </fieldset>
     </div>
