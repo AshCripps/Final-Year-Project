@@ -24,7 +24,7 @@ app.get('/', function(req,res){
         arr.push(element.name);
       });
       console.log(arr);
-      res.render('index', {rows:arr, selection:null, data:null});
+      res.render('index', {rows:arr, selection:null, data:null, keys:null});
     })
   })
 
@@ -42,10 +42,11 @@ app.post('/collection', function(req,res){
       if (err) throw err;
       console.log("loading");
       var data = [];
+      var keys = Object.keys(results[0]);
       results.forEach(element => {
-        data.push(["Timestamp: " + element.timestamp, " Host: " + element.host, " Type: " + element.type, " Type_instance: " + element.type_instance, " Values: " + element.values]);
+        data.push(Object.values(element));
       })
-        res.render('index', {selection:selected, rows:arr, data:data});
+        res.render('index', {selection:selected, rows:arr, data:data. keys:keys});
     })
   })
 

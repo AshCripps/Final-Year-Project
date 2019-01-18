@@ -20,12 +20,32 @@
           </select>
           <input type="submit" class="ghost-button" value="Submit" />
         </form>
-        <form action="/collection" method="get">
+        <form id="resultForm" action="/collection" method="get">
           <% if(selection !== null){ %>
             <p><%= selection %></p>
           <% } %>
+
+          <table>
+            <tr>
+              <% keys.forEach(function(key){ %>
+                <th><%= key %></th>
+              <% }) %>
+            </tr>
+            <% if(data !== null){ %>
+              <% data.forEach(function(line){ %>
+                <tr>
+                  <% line.forEach(function(value){ %>
+                    <td><%= value %></td>
+                  <% }) %>  
+                </tr>
+              <% }) %>
+            <% } %>
+          </table>
+
           <% if(data !== null){ %>
-            <p><%= data %></p>
+            <% data.forEach(function(line){ %>
+              <p><%= line %></p>
+            <% }) %>
           <% } %>
         </form>
       </fieldset>
