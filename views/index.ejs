@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Mointoring Data Viewer</title>
+    <title>Monitoring Data Viewer</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
   </head>
@@ -26,8 +26,8 @@
           <% } %>
 
           <canvas id = "collectionChart"></canvas>
-
-          <% var ctx = document.getElementById("collectionChart").getContext("2d");
+          <script>
+           var ctx = document.getElementById("collectionChart").getContext("2d");
             var collectionChart = new Chart(ctx, {
               type: 'bar',
               data: {
@@ -37,7 +37,7 @@
                   data: [12, 19, 3, 5, 2, 3],
                   backgroundColor: [
                   'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',1
                   'rgba(255, 206, 86, 0.2)',
                   'rgba(75, 192, 192, 0.2)',
                   'rgba(153, 102, 255, 0.2)',
@@ -63,7 +63,8 @@
                   }]
                 }
               }
-            });%>
+            });
+            </script>
 
 
         <% if(keys !==null){ %>
