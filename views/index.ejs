@@ -31,13 +31,14 @@
                var ctx = document.getElementById("collectionChart").getContext("2d");
                var collectionChart = new Chart(ctx, {
                  type: 'bar',
-                 data: <% chartData %>
+                 data: <%- JSON.stringify(chartData) %>
                });
             </script>
+            <!--> %- to escape the html and stringify to get it JS readable </!-->
             <% } %>
 
 
-      <% if(keys !==null){ %>
+      <!--><% if(keys !==null){ %>
           <table class="ghost-table">
             <tr>
               <% keys.forEach(function(key){ %>
@@ -54,7 +55,7 @@
               <% }) %>
             <% } %>
           </table>
-        <% } %>
+        <% } %></!-->
         </form>
       </fieldset>
     </div>
