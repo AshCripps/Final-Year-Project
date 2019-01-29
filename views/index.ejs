@@ -30,7 +30,7 @@
             <script>
                var ctx = document.getElementById("collectionChart").getContext("2d");
                var collectionChart = new Chart(ctx, {
-                 type: 'bar',
+                 type: 'line',
                  data: <%- JSON.stringify(chartData) %>
                });
             </script>
