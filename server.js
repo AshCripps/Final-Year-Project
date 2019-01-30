@@ -45,12 +45,15 @@ app.post('/collection', function(req,res){
       var data = [];
       var chartData = [];
       var timestampData = [];
+      checkOptions = []
       var keys = Object.keys(results[0]);
       results.forEach(element => {
         data.push(Object.values(element));
         timestampData.push(element.timestamp);
         chartData.push(element.values);
-        checkOptions.push(element.type_instance);
+        if (!checkOptions.includes(element.type_instance)){ //Only add new options to the radio check
+          checkOptions.push(element.type_instance);
+        }
       })
 
       var chartData = {

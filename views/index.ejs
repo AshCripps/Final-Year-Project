@@ -35,16 +35,15 @@
                });
             </script>
             <% } %>
-            <!--> %- to escape the html and stringify to get it JS readable </!-->
 
           <% if(checkOptions !== null) { %>
-            <% checkOptions.forEach(function(option)) { %>
-              <input type="radio" name="graphOption" value="<%=option/%>"><%=option/%><br>
-            <% } /%>
-          <% } /%>      
+            <% checkOptions.forEach(function(option) { %>
+              <input type="radio" name="graphOption" value="<%=option%>"><%=option%><br>
+            <% }) %>
+          <% } %>
 
 
-      <!--><% if(keys !==null){ %>
+      <!--><% /* if(keys !==null){ %>
           <table class="ghost-table">
             <tr>
               <% keys.forEach(function(key){ %>
@@ -61,7 +60,7 @@
               <% }) %>
             <% } %>
           </table>
-        <% } %></!-->
+        <% } */ %></!-->
         </form>
       </fieldset>
     </div>
