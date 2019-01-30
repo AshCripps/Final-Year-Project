@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var arr = [];
+var checkOptions = [];
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -24,7 +25,7 @@ app.get('/', function(req,res){
         arr.push(element.name);
       });
       console.log(arr);
-      res.render('index', {rows:arr, selection:null, data:null, keys:null, chartData:null});
+      res.render('index', {rows:arr, selection:null, data:null, keys:null, chartData:null, checkOptions:null});
     })
   })
 
@@ -49,6 +50,7 @@ app.post('/collection', function(req,res){
         data.push(Object.values(element));
         timestampData.push(element.timestamp);
         chartData.push(element.values);
+        checkOptions.push(element.type_instance);
       })
 
       var chartData = {
@@ -66,7 +68,7 @@ app.post('/collection', function(req,res){
         }]
       };
 
-      res.render('index', {selection:selected, rows:arr, data:data, keys:keys, chartData:chartData});
+      res.render('index', {selection:selected, rows:arr, data:data, keys:keys, chartData:chartData, checkOptions:checkOptions});
     })
   })
 

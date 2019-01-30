@@ -34,8 +34,14 @@
                  data: <%- JSON.stringify(chartData) %>
                });
             </script>
-            <!--> %- to escape the html and stringify to get it JS readable </!-->
             <% } %>
+            <!--> %- to escape the html and stringify to get it JS readable </!-->
+
+          <% if(checkOptions !== null) { %>
+            <% checkOptions.forEach(function(option)) { %>
+              <input type="radio" name="graphOption" value="<%=option/%>"><%=option/%><br>
+            <% } /%>
+          <% } /%>      
 
 
       <!--><% if(keys !==null){ %>
