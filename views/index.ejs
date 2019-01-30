@@ -35,13 +35,15 @@
                });
             </script>
             <% } %>
+        </form>
 
+        <form id="graph" action="/collection/graph" method="post">
           <% if(checkOptions !== null) { %>
             <% checkOptions.forEach(function(option) { %>
               <input type="radio" name="graphOption" value="<%=option%>"><%=option%><br>
             <% }) %>
           <% } %>
-
+        </form>
 
       <!--><% /* if(keys !==null){ %>
           <table class="ghost-table">
@@ -61,7 +63,7 @@
             <% } %>
           </table>
         <% } */ %></!-->
-        </form>
+
       </fieldset>
     </div>
   </body>

@@ -78,6 +78,10 @@ app.post('/collection', function(req,res){
 
 })
 
+app.post('/collection/graph', function(req,res){
+  console.log(req.body.graphOption);
+})
+
 app.listen(3000, function(){
   console.log("Testing and listening on port 3000")
 })
