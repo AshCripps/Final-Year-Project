@@ -6,6 +6,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var arr = [];
 var checkOptions = [];
+var selected = "";
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -25,14 +26,14 @@ app.get('/', function(req,res){
         arr.push(element.name);
       });
       console.log(arr);
-      res.render('index', {rows:arr, selection:null, data:null, keys:null, chartData:null, checkOptions:null});
+      res.render('index', {rows:arr, selection:selected, data:null, keys:null, chartData:null, checkOptions:checkOptions});
     })
   })
 
 })
 
 app.post('/collection', function(req,res){
-  var selected = req.body.selectpicker;
+  selected = req.body.selectpicker;
   console.log("Option picked is ", selected);
 
   createConnection(function(err, dbo){
@@ -42,18 +43,38 @@ app.post('/collection', function(req,res){
     dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) throw err;
       console.log("loading");
-      var data = [];
       var chartData = [];
       var timestampData = [];
       checkOptions = []
-      var keys = Object.keys(results[0]);
       results.forEach(element => {
-        data.push(Object.values(element));
         timestampData.push(element.timestamp);
         chartData.push(element.values);
         if (!checkOptions.includes(element.type_instance)){ //Only add new options to the radio check
           checkOptions.push(element.type_instance);
         }
+      })
+      res.render('index', {selection:selected, rows:arr, chartData:null, checkOptions:checkOptions});
+    })
+  })
+
+
+})
+
+app.post('/collection/graph', function(req,res){
+  console.log(req.body.graphOption);
+  var graphOption = req.body.graphOption;
+  createConnection(function(err, dbo){
+    if (err){
+      console.log("Connection Failed", err);
+    }
+    dbo.collection(selected).find({types_instance:graphOption}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
+      if (err) throw err;
+      console.log("loading");
+      var chartData = [];
+      var timestampData = [];
+      results.forEach(element => {
+        timestampData.push(element.timestamp);
+        chartData.push(element.values);
       })
 
       var chartData = {
@@ -71,15 +92,9 @@ app.post('/collection', function(req,res){
         }]
       };
 
-      res.render('index', {selection:selected, rows:arr, data:data, keys:keys, chartData:chartData, checkOptions:checkOptions});
+      res.render('index', {selection:selected, rows:arr, chartData:chartData, checkOptions:checkOptions});
     })
   })
-
-
-})
-
-app.post('/collection/graph', function(req,res){
-  console.log(req.body.graphOption);
 })
 
 app.listen(3000, function(){
