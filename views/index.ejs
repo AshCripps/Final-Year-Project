@@ -25,6 +25,15 @@
           <% if(selection !== null){ %>
             <p><%= selection %></p>
           <% } %>
+        </form>
+
+        <form id="graph" action="/collection/graph" method="post">
+          <% if(checkOptions !== null) { %>
+            <% checkOptions.forEach(function(option) { %>
+              <input type="radio" name="graphOption" value="<%=option%>"><%=option%><br>
+            <% }) %>
+          <% } %>
+          <input type="submit" class="ghost-button" value="View Graph"/>
           <% if(chartData !== null){ %>
             <canvas id = "collectionChart"></canvas>
             <script>
@@ -35,14 +44,6 @@
                });
             </script>
             <% } %>
-        </form>
-
-        <form id="graph" action="/collection/graph" method="post">
-          <% if(checkOptions !== null) { %>
-            <% checkOptions.forEach(function(option) { %>
-              <input type="radio" name="graphOption" value="<%=option%>"><%=option%><br>
-            <% }) %>
-          <% } %>
         </form>
 
       <!--><% /* if(keys !==null){ %>
