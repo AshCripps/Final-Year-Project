@@ -7,6 +7,7 @@ var url = "mongodb://localhost:27017/";
 var arr = [];
 var checkOptions = [];
 var selected = "";
+var error = "";
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -17,9 +18,15 @@ app.get('/', function(req,res){
   createConnection(function(err, dbo){
     if (err) {
       console.log("Broken", err);
+      error = err;
+      res.redirect('/error');
+      console.log("Broken", err);
     }
     var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray(function(err, results){
-      if (err) throw err;
+      if (err) {
+        error = err;
+        res.redirect('/error');
+      }
       console.log("Loading Collections");
 
       results.forEach(element => {
@@ -39,9 +46,14 @@ app.post('/collection', function(req,res){
   createConnection(function(err, dbo){
     if (err){
       console.log("Connection Failed", err);
+      error = err;
+      res.redirect('/error');
     }
     dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
-      if (err) throw err;
+      if (err) {
+        error = err;
+        res.redirect('/error');
+      }
       console.log("loading");
       var chartData = [];
       var timestampData = [];
@@ -66,10 +78,15 @@ app.post('/collection/graph', function(req,res){
   createConnection(function(err, dbo){
     if (err){
       console.log("Connection Failed", err);
+      error = err;
+      res.redirect('/error');
     }
     var query = {type_instance: graphOption};
     dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
-      if (err) throw err;
+      if (err) {
+        error = err;
+        res.redirect('/error');
+      }
       console.log("loading");
       var chartData = [];
       var timestampData = [];
@@ -98,8 +115,9 @@ app.post('/collection/graph', function(req,res){
   })
 })
 
-app.get('error', function(req, res){
-  res.render('error');
+app.get('/error', function(req, res){
+  res.render('error', {error:error});
+  error = "";
 })
 
 app.get('*', function(req, res){
@@ -117,5 +135,4 @@ function createConnection(cb){
     cb(null, dbo);
     db.close();
 })
-}
 }
