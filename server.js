@@ -67,7 +67,8 @@ app.post('/collection/graph', function(req,res){
     if (err){
       console.log("Connection Failed", err);
     }
-    dbo.collection(selected).find({types_instance:graphOption}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
+    var query = {type_instance: graphOption};
+    dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) throw err;
       console.log("loading");
       var chartData = [];
@@ -80,7 +81,7 @@ app.post('/collection/graph', function(req,res){
       var chartData = {
         labels: timestampData,
         datasets: [{
-          label: 'Testing',
+          label: graphOption,
           data: chartData,
           backgroundColor: [
           'rgba(255, 99, 132, 0.2)'
@@ -97,6 +98,14 @@ app.post('/collection/graph', function(req,res){
   })
 })
 
+app.get('error', function(req, res){
+  res.render('error');
+})
+
+app.get('*', function(req, res){
+  res.redirect('/error');
+})
+
 app.listen(3000, function(){
   console.log("Testing and listening on port 3000")
 })
@@ -106,29 +115,7 @@ function createConnection(cb){
     if (err) throw err;
     var dbo = db.db("collectd");
     cb(null, dbo);
+    db.close();
 })
 }
-
-function read(dbo, coll, cb){
-  var cursor = dbo.collection(coll).find({}, {host: 1, type_instance: 1, values:1}).toArray( function(err, results){
-    if (err) throw err;
-    console.log("loading");
-    console.log(results);
-  })
-
-  //, function(err, result) {
-  //  if (err) throw err;
-  //  console.log("Loading file");
-  //  console.log(result);
-    dbo.close;
-}
-
-
-
-function test(coll, cb){
-  createConnection(function(err, dbo){
-    if (err) return cb(err);
-    read(dbo, coll);
-    cb();
-  })
 }
