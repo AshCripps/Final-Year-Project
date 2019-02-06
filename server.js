@@ -20,18 +20,18 @@ app.get('/', function(req, res){
 app.post('/', function(req, res){
   var username = req.body.username;
   var password = req.body.password;
-  var query = {username: username, password: password};
-  createConnection(function(err, dbo){
+  var query = {username: username};
+  connectAuth(function(err, dbo){
     if (err){
       error = err;
       res.redirect('/error');
     }
-    var cursor = dbo.collection("authentication").find(query).limit(1).toArray(function(err, results){
+    var cursor = dbo.collection("users").find(query).limit(1).toArray(function(err, results){
       if (err) {
         error = err;
         res.redirect('/error');
       }
-      if (results !== null){
+      if (results !== [] && results.password == password){
         res.redirect('home');
       }else {
         error = "Invalid Username or Password"
@@ -166,6 +166,15 @@ function createConnection(cb){
   MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
     if (err) throw err;
     var dbo = db.db("collectd");
+    cb(null, dbo);
+    db.close();
+})
+}
+
+function connectAuth(cb){
+  MongoClient.connect(url, {useNewUrlParser: true}, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("authentication");
     cb(null, dbo);
     db.close();
 })
