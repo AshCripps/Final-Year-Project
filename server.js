@@ -13,7 +13,15 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
-app.get('/', function(req,res){
+app.get('/', function(req, res){
+  res.render('login');
+})
+
+app.post('/', function(req, res){
+  res.redirect('/home')
+})
+
+app.get('/home', function(req, res){
   arr = [];
   createConnection(function(err, dbo){
     if (err) {
@@ -39,7 +47,7 @@ app.get('/', function(req,res){
 
 })
 
-app.post('/collection', function(req,res){
+app.post('/collection', function(req, res){
   selected = req.body.selectpicker;
   console.log("Option picked is ", selected);
 
@@ -49,30 +57,35 @@ app.post('/collection', function(req,res){
       error = err;
       res.redirect('/error');
     }
-    dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
-      if (err) {
-        error = err;
-        res.redirect('/error');
-      }
-      console.log("loading");
-      var chartData = [];
-      var timestampData = [];
-      checkOptions = []
-      results.forEach(element => {
-        timestampData.push(element.timestamp);
-        chartData.push(element.values);
-        if (!checkOptions.includes(element.type_instance)){ //Only add new options to the radio check
-          checkOptions.push(element.type_instance);
+    if (selected !== null){
+      dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
+        if (err) {
+          error = err;
+          res.redirect('/error');
         }
+        console.log("loading");
+        var chartData = [];
+        var timestampData = [];
+        checkOptions = []
+        results.forEach(element => {
+          timestampData.push(element.timestamp);
+          chartData.push(element.values);
+          if (!checkOptions.includes(element.type_instance)){ //Only add new options to the radio check
+            checkOptions.push(element.type_instance);
+          }
+        })
+        res.render('index', {selection:selected, rows:arr, chartData:null, checkOptions:checkOptions});
       })
-      res.render('index', {selection:selected, rows:arr, chartData:null, checkOptions:checkOptions});
+    }else{
+      error = "Please select a collection";
+      res.redirect('/error');
+    }
     })
-  })
 
 
 })
 
-app.post('/collection/graph', function(req,res){
+app.post('/collection/graph', function(req, res){
   console.log(req.body.graphOption);
   var graphOption = req.body.graphOption;
   createConnection(function(err, dbo){
@@ -82,6 +95,7 @@ app.post('/collection/graph', function(req,res){
       res.redirect('/error');
     }
     var query = {type_instance: graphOption};
+    if (selected !== null){
     dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) {
         error = err;
@@ -112,6 +126,10 @@ app.post('/collection/graph', function(req,res){
 
       res.render('index', {selection:selected, rows:arr, chartData:chartData, checkOptions:checkOptions});
     })
+  } else{
+    error = "Please select a collection";
+    res.redirect('/error');
+  }
   })
 })
 
