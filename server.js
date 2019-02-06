@@ -18,7 +18,27 @@ app.get('/', function(req, res){
 })
 
 app.post('/', function(req, res){
-  res.redirect('/home')
+  var username = req.body.username;
+  var password = req.body.password;
+  var query = {username: username, password: password};
+  createConnection(function(err, dbo){
+    if (err){
+      error = err;
+      res.redirect('/error');
+    }
+    var cursor = dbo.collection("authentication").find(query).limit(1).toArray(function(err, results){
+      if (err) {
+        error = err;
+        res.redirect('/error');
+      }
+      if (results !== null){
+        res.redirect('home');
+      }else {
+        error = "Invalid Username or Password"
+        res.redirect('error');
+      }
+    })
+  })
 })
 
 app.get('/home', function(req, res){
@@ -28,7 +48,6 @@ app.get('/home', function(req, res){
       console.log("Broken", err);
       error = err;
       res.redirect('/error');
-      console.log("Broken", err);
     }
     var cursor2 = dbo.listCollections({}, {nameOnly:true}).toArray(function(err, results){
       if (err) {
@@ -57,19 +76,16 @@ app.post('/collection', function(req, res){
       error = err;
       res.redirect('/error');
     }
-    if (selected !== null){
+    if (selected !== ""){
       dbo.collection(selected).find({}, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
         if (err) {
           error = err;
           res.redirect('/error');
         }
         console.log("loading");
-        var chartData = [];
-        var timestampData = [];
+
         checkOptions = []
         results.forEach(element => {
-          timestampData.push(element.timestamp);
-          chartData.push(element.values);
           if (!checkOptions.includes(element.type_instance)){ //Only add new options to the radio check
             checkOptions.push(element.type_instance);
           }
@@ -95,7 +111,7 @@ app.post('/collection/graph', function(req, res){
       res.redirect('/error');
     }
     var query = {type_instance: graphOption};
-    if (selected !== null){
+    if (selected !== ""){
     dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) {
         error = err;
