@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
@@ -13,13 +15,18 @@ app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
+app.use(session({
+  secret: 'Monitoring Application',
+  store: new MongoStore()
+}));
+
 app.get('/', function(req, res){
   res.render('login');
 })
 
 app.post('/', function(req, res){
   var username = req.body.username;
-  var password = req.body.password;
+  var password = req.body.pwd;
   var query = {username: username};
   connectAuth(function(err, dbo){
     if (err){
@@ -31,11 +38,16 @@ app.post('/', function(req, res){
         error = err;
         res.redirect('/error');
       }
-      if (results !== [] && results.password == password){
-        res.redirect('home');
+      if (results !== []){
+        if (results[0].password === password){
+          res.redirect('/home');
+        } else {
+          error = "Incorrect Password";
+          res.redirect('/error');
+        }
       }else {
         error = "Invalid Username or Password"
-        res.redirect('error');
+        res.redirect('/error');
       }
     })
   })
