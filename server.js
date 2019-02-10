@@ -16,8 +16,14 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
 app.use(session({
+  genid: function(req) {
+    return genuuid()
+  },
+  cookie: {maxAge: 1800000},
   secret: 'Monitoring Application',
-  store: new MongoStore()
+  resave: true,
+  saveUnitialized: false,
+  store: new MongoStore({url: "mongodb://localhost/cookies"})
 }));
 
 app.get('/', function(req, res){
@@ -40,6 +46,7 @@ app.post('/', function(req, res){
       }
       if (results !== []){
         if (results[0].password === password){
+          req.session.username = username;
           res.redirect('/home');
         } else {
           error = "Incorrect Password";
@@ -66,6 +73,8 @@ app.get('/home', function(req, res){
         error = err;
         res.redirect('/error');
       }
+      console.log("This user logged in: ");
+      console.log(req.session.username);
       console.log("Loading Collections");
 
       results.forEach(element => {
