@@ -16,9 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
 app.use(session({
-  genid: function(req) {
-    return genuuid()
-  },
+  //genid: function(req) {
+  //  return genuuid()
+  //},
   cookie: {maxAge: 1800000},
   secret: 'Monitoring Application',
   resave: true,
@@ -61,6 +61,10 @@ app.post('/', function(req, res){
 })
 
 app.get('/home', function(req, res){
+  if (req.session.username == null){
+    err = "Please login Bylat";
+    res.redirect("/error");
+  }
   arr = [];
   createConnection(function(err, dbo){
     if (err) {
