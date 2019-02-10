@@ -18,7 +18,7 @@ app.use(express.static('public'));
 
 app.use(session({
   genid: function(req) {
-    return uuidv4()
+    return uuidv4();
   },
   cookie: {maxAge: 1800000},
   secret: 'Monitoring Application',
@@ -63,9 +63,9 @@ app.post('/', function(req, res){
 
 app.get('/home', function(req, res){
   if (req.session.username == null){
-    err = "Please login Bylat";
-    res.redirect("/error");
-  }
+    err = "Please login";
+    res.redirect("/");
+  } else {
   arr = [];
   createConnection(function(err, dbo){
     if (err) {
@@ -78,8 +78,6 @@ app.get('/home', function(req, res){
         error = err;
         res.redirect('/error');
       }
-      console.log("This user logged in: ");
-      console.log(req.session.username);
       console.log("Loading Collections");
 
       results.forEach(element => {
@@ -89,10 +87,14 @@ app.get('/home', function(req, res){
       res.render('index', {rows:arr, selection:selected, data:null, keys:null, chartData:null, checkOptions:checkOptions});
     })
   })
-
+}
 })
 
 app.post('/collection', function(req, res){
+  if (req.session.username == null){
+    err = "Please login";
+    res.redirect("/");
+  } else {
   selected = req.body.selectpicker;
   console.log("Option picked is ", selected);
 
@@ -124,10 +126,14 @@ app.post('/collection', function(req, res){
     }
     })
 
-
+}
 })
 
 app.post('/collection/graph', function(req, res){
+  if (req.session.username == null){
+    err = "Please login";
+    res.redirect("/");
+  } else {
   console.log(req.body.graphOption);
   var graphOption = req.body.graphOption;
   createConnection(function(err, dbo){
@@ -173,6 +179,7 @@ app.post('/collection/graph', function(req, res){
     res.redirect('/error');
   }
   })
+}
 })
 
 app.get('/error', function(req, res){
@@ -181,6 +188,7 @@ app.get('/error', function(req, res){
 })
 
 app.get('*', function(req, res){
+  error = "Page not found";
   res.redirect('/error');
 })
 
