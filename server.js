@@ -28,7 +28,7 @@ app.use(session({
 }));
 
 app.get('/', function(req, res){
-  res.render('login');
+  res.render('login', {error:error});
 })
 
 app.post('/', function(req, res){
@@ -84,7 +84,7 @@ app.get('/home', function(req, res){
         arr.push(element.name);
       });
       console.log(arr);
-      res.render('index', {rows:arr, selection:selected, data:null, keys:null, chartData:null, checkOptions:checkOptions});
+      res.render('index', {rows:arr, selection:selected, data:null, keys:null, chartData:null, checkOptions:checkOptions, username:req.session.username});
     })
   })
 }
@@ -118,7 +118,7 @@ app.post('/collection', function(req, res){
             checkOptions.push(element.type_instance);
           }
         })
-        res.render('index', {selection:selected, rows:arr, chartData:null, checkOptions:checkOptions});
+        res.render('index', {selection:selected, rows:arr, chartData:null, checkOptions:checkOptions, username:req.session.username});
       })
     }else{
       error = "Please select a collection";
@@ -172,7 +172,7 @@ app.post('/collection/graph', function(req, res){
         }]
       };
 
-      res.render('index', {selection:selected, rows:arr, chartData:chartData, checkOptions:checkOptions});
+      res.render('index', {selection:selected, rows:arr, chartData:chartData, checkOptions:checkOptions, username:req.session.username});
     })
   } else{
     error = "Please select a collection";
