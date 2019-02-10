@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const uuidv4 = require('uuid/v4')
 
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
@@ -16,9 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static('public'));
 
 app.use(session({
-  //genid: function(req) {
-  //  return genuuid()
-  //},
+  genid: function(req) {
+    return uuidv4()
+  },
   cookie: {maxAge: 1800000},
   secret: 'Monitoring Application',
   resave: true,
