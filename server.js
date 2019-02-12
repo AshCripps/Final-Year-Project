@@ -182,6 +182,19 @@ app.post('/collection/graph', function(req, res){
 }
 })
 
+app.get('/logout', function(req, res){
+  if (res.session){
+    req.session.destroy(function(err){
+      if (err){
+        error = err;
+        return res.redirect('/error');
+      }else{
+        return res.redirect('/');
+      }
+    })
+  }
+})
+
 app.get('/error', function(req, res){
   res.render('error', {error:error});
   error = "";
