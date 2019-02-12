@@ -184,14 +184,8 @@ app.post('/collection/graph', function(req, res){
 
 app.get('/logout', function(req, res){
   if (res.session){
-    req.session.destroy(function(err){
-      if (err){
-        error = err;
-        return res.redirect('/error');
-      }else{
-        return res.redirect('/');
-      }
-    })
+    req.session.destroy();
+    res.redirect('/');
   }
 })
 
