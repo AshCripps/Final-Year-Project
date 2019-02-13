@@ -81,7 +81,9 @@ app.get('/home', function(req, res){
       console.log("Loading Collections");
 
       results.forEach(element => {
-        arr.push(element.name);
+        if(element.name != "interface"){ //remove interface from the options available - not useful
+          arr.push(element.name);
+        }
       });
       console.log(arr);
       res.render('index', {rows:arr, selection:selected, data:null, keys:null, chartData:null, checkOptions:checkOptions, username:req.session.username});
@@ -142,7 +144,7 @@ app.post('/collection/graph', function(req, res){
       error = err;
       res.redirect('/error');
     }
-    var query = {type_instance: graphOption};
+    var query = {type_instance: graphOption, type: "percent"};
     if (selected !== ""){
     dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) {
@@ -183,7 +185,10 @@ app.post('/collection/graph', function(req, res){
 })
 
 app.get('/logout', function(req, res){
-  if (res.session){
+  if (req.session.username == null){
+    res.redirect("/");
+  } else {
+    err = ""; //reset error because logout doesnt really exist so cause a page not found error
     req.session.destroy();
     res.redirect('/');
   }
