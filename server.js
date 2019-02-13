@@ -144,7 +144,10 @@ app.post('/collection/graph', function(req, res){
       error = err;
       res.redirect('/error');
     }
-    var query = {type_instance: graphOption, type: "percent"};
+    var query = {type_instance: graphOption};
+    if (selected == "memory"){
+      query = {type_instance: graphOption, type: "percent"}; //select only percent values for memory
+    }
     if (selected !== ""){
     dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) {
