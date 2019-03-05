@@ -78,7 +78,7 @@ app.get('/home', function(req, res){
         error = err;
         res.redirect('/error');
       }
-      console.log("Loading Collections");
+      //console.log("Loading Collections");
 
       results.forEach(element => {
         if(element.name != "interface"){ //remove interface from the options available - not useful
@@ -98,7 +98,7 @@ app.post('/collection', function(req, res){
     res.redirect("/");
   } else {
   selected = req.body.selectpicker;
-  console.log("Option picked is ", selected);
+  //console.log("Option picked is ", selected);
 
   createConnection(function(err, dbo){
     if (err){
@@ -208,7 +208,7 @@ app.get('*', function(req, res){
 })
 
 app.listen(3000, function(){
-  console.log("Testing and listening on port 3000")
+  //console.log("Testing and listening on port 3000")
 })
 
 function createConnection(cb){
