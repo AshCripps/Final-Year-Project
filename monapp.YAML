@@ -4,10 +4,10 @@ metadata:
   name: mon-app-deploy
 spec:
   selector:
-    matchlabels:
+    matchLabels:
       app: monapp
   template:
-    metaData:
+    metadata:
       name: mon-app-pod
       labels:
         app: monapp
