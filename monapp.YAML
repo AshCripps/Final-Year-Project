@@ -1,14 +1,16 @@
----
-  apiVersion: monapp/v1beta1
-  kind: Deployment
-  metadata:
-    name: mon-app-deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mon-app-deploy
   spec:
+    selector:
+      matchlabels:
+        app: monapp
     template:
       metaData:
       name: mon-app-pod
       labels:
-        app: web
+        app: monapp
       spec:
         hostNetwork: true
         containers:
