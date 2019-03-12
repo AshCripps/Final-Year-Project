@@ -1,0 +1,19 @@
+---
+  apiVersion: monapp/v1beta1
+  kind: Deployment
+  metadata:
+    name: mon-app-deploy
+  spec:
+    template:
+      metaData:
+      name: mon-app-pod
+      labels:
+        app: web
+      spec:
+        hostNetwork: true
+        containers:
+          - name: mon-app
+            image: ashcripps/final-year-project:monapp
+            ports:
+              - containerPort: 3000
+                hostPort: 3000
