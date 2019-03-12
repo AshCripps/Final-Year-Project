@@ -2,20 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mon-app-deploy
-  spec:
-    selector:
-      matchlabels:
-        app: monapp
-    template:
-      metaData:
+spec:
+  selector:
+    matchlabels:
+      app: monapp
+  template:
+    metaData:
       name: mon-app-pod
       labels:
         app: monapp
-      spec:
-        hostNetwork: true
-        containers:
-          - name: mon-app
-            image: ashcripps/final-year-project:monapp
-            ports:
-              - containerPort: 3000
-                hostPort: 3000
+    spec:
+      hostNetwork: true
+      containers:
+        - name: mon-app
+          image: ashcripps/final-year-project:monapp
+          ports:
+            - containerPort: 3000
+              hostPort: 3000
