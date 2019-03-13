@@ -144,9 +144,9 @@ app.post('/collection/graph', function(req, res){
       error = err;
       res.redirect('/error');
     }
-    var query = {type_instance: graphOption};
+    var query = {type_instance: graphOption, timestamp: {$lt: new Date(), $gte: new Date(new Date().setDate(new Date.getDate()-1))}};
     if (selected == "memory"){
-      query = {type_instance: graphOption, type: "percent"}; //select only percent values for memory
+      query = {type_instance: graphOption, type: "percent", timestamp: {$lt: new Date(), $gte: new Date(new Date().setDate(new Date.getDate()-1))}}; //select only percent values for memory
     }
     if (selected !== ""){
     dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
