@@ -7,11 +7,16 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
   </head>
   <body>
+    <header>
+      <% include header %>
+    </header>
+    <main>
     <div class="container">
       <p><h1>Something went wrong </h1></p>
       <% if(error !== null){%>
         <p><%= error %></p>
       <% } %>
     </div>
+    </main>
   </body>
 </html>

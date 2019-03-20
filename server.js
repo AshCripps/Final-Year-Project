@@ -45,7 +45,7 @@ app.post('/', function(req, res){
         error = err;
         res.redirect('/error');
       }
-      if (results !== []){
+      if (results.length > 0){
         if (results[0].password === password){
           req.session.username = username;
           res.redirect('/home');
@@ -144,12 +144,16 @@ app.post('/collection/graph', function(req, res){
       error = err;
       res.redirect('/error');
     }
+    if (typeof graphOption === 'undefined'){
+      error = "Please select an option";
+      res.redirect('/error');
+    }
     var query = {type_instance: graphOption, timestamp: {$lt: new Date(), $gte: new Date(new Date().setDate(new Date().getDate()-1))}};
     if (selected == "memory"){
       query = {type_instance: graphOption, type: "percent", timestamp: {$lt: new Date(), $gte: new Date(new Date().setDate(new Date().getDate()-1))}}; //select only percent values for memory
     }
     if (selected !== ""){
-    dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
+      dbo.collection(selected).find(query, {host: 1, types_instance: 1, values: 1}).limit(30).toArray(function(err, results){
       if (err) {
         error = err;
         res.redirect('/error');
