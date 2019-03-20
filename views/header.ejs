@@ -8,6 +8,9 @@
       <ul class="ghost-li">
         <li><a href="/home">Home</a></li>
         <li><a>Logged in as:</a></li>
+        <% if(typeof username === 'undefined'){%>
+          <%username = 'not logged in' ;%>
+        <% } %>
         <li><a href="/home"><%= username %></a></li>
         <li><a href="/logout">Logout</a></li>
       </ul>
