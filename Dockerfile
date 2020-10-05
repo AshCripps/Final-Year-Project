@@ -1,4 +1,4 @@
-FROM node:11
+FROM node:14
 MAINTAINER Ash Cripps <14062034>
 EXPOSE 3000
 RUN apt-get update 
